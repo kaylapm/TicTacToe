@@ -17,7 +17,7 @@ public class TTT extends JPanel {
     public static final Color COLOR_NOUGHT = new Color(64, 154, 225);
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
-    private Board board;  // Board must be declared here
+    private Board board;
     private State currentState;
     private Seed currentPlayer;
     private JLabel statusBar;
@@ -150,7 +150,7 @@ public class TTT extends JPanel {
     }
 
     private void initGamePanel() {
-        board = new Board(gridSize);  // Initialize the board before using it
+        board = new Board(gridSize);
 
         if (isSinglePlayer) {
             aiPlayer = new AIPlayerMinimax(board);
@@ -162,11 +162,11 @@ public class TTT extends JPanel {
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setOpaque(true);
         statusBar.setPreferredSize(new Dimension(400, 30));
-        statusBar.setHorizontalAlignment(JLabel.LEFT);
+        statusBar.setHorizontalAlignment(JLabel.CENTER); // Center align the text
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
         setLayout(new BorderLayout());
-        add(statusBar, BorderLayout.PAGE_END);
+        add(statusBar, BorderLayout.PAGE_START); // Move to the top
         setPreferredSize(new Dimension(400, 400 + 30));
         setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
@@ -185,12 +185,14 @@ public class TTT extends JPanel {
                             && board.cells[row][col].content == Seed.NO_SEED) {
                         currentState = board.stepGame(currentPlayer, row, col);
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                        updateStatusBar();
 
                         // AI Move
                         if (isSinglePlayer && currentPlayer == Seed.NOUGHT && currentState == State.PLAYING) {
                             int[] aiMove = aiPlayer.move();
                             currentState = board.stepGame(currentPlayer, aiMove[0], aiMove[1]);
                             currentPlayer = Seed.CROSS;
+                            updateStatusBar();
                         }
                     }
                 } else {
@@ -212,11 +214,21 @@ public class TTT extends JPanel {
         });
     }
 
+    private void updateStatusBar() {
+        if (currentState == State.PLAYING) {
+            statusBar.setText("Player " + (currentPlayer == Seed.CROSS ? "X" : "O") + "'s Turn");
+        } else if (currentState == State.DRAW) {
+            statusBar.setText("It's a Draw!");
+        } else {
+            statusBar.setText("Player " + (currentPlayer == Seed.CROSS ? "O" : "X") + " Wins!");
+        }
+    }
+
     public void newGame() {
         board.newGame();
         currentPlayer = Seed.CROSS;
         currentState = State.PLAYING;
-        statusBar.setText("Player X's Turn");
+        updateStatusBar();
         repaint();
     }
 
@@ -224,7 +236,7 @@ public class TTT extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (board != null) {
-            board.paint(g);  // Ensure board is initialized before painting
+            board.paint(g);
         }
     }
 
