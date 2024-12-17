@@ -25,16 +25,22 @@ public class Cell {
         int x1 = col * SIZE + PADDING;
         int y1 = row * SIZE + PADDING;
 
+        // Calculate the center position for the symbols
+        int centerX = col * SIZE + SIZE / 2;
+        int centerY = row * SIZE + SIZE / 2;
+
         // Set thicker stroke for drawing
         g2d.setStroke(new BasicStroke(4)); // Adjust the thickness as needed
 
         if (content == Seed.CROSS) {
             g2d.setColor(TTT.COLOR_CROSS);
-            g2d.drawLine(x1, y1, x1 + SEED_SIZE, y1 + SEED_SIZE);
-            g2d.drawLine(x1 + SEED_SIZE, y1, x1, y1 + SEED_SIZE);
+            int offset = SEED_SIZE / 2;
+            g2d.drawLine(centerX - offset, centerY - offset, centerX + offset, centerY + offset);
+            g2d.drawLine(centerX + offset, centerY - offset, centerX - offset, centerY + offset);
         } else if (content == Seed.NOUGHT) {
             g2d.setColor(TTT.COLOR_NOUGHT);
-            g2d.drawOval(x1, y1, SEED_SIZE, SEED_SIZE);
+            int radius = SEED_SIZE / 2;
+            g2d.drawOval(centerX - radius, centerY - radius, SEED_SIZE, SEED_SIZE);
         }
     }
 }
