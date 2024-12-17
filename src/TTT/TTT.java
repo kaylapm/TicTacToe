@@ -2,6 +2,8 @@ package TTT;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,9 +22,65 @@ public class TTT extends JPanel {
     private Seed currentPlayer;
     private JLabel statusBar;
     private AIPlayer aiPlayer; // AI player instance
+    private JPanel welcomePanel; // Welcome panel
+    private JButton startButton; // Start game button
 
     public TTT() {
-        super.addMouseListener(new MouseAdapter() {
+        setLayout(new BorderLayout());
+        initWelcomePanel();
+        add(welcomePanel, BorderLayout.CENTER);
+    }
+
+    private void initWelcomePanel() {
+        welcomePanel = new JPanel();
+        welcomePanel.setLayout(new GridBagLayout());
+        welcomePanel.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        JLabel welcomeLabel = new JLabel("Welcome to Tic Tac Toe!");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        welcomePanel.add(welcomeLabel, gbc);
+
+        startButton = new JButton("Start Game");
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+        startButton.setBackground(new Color(70, 130, 180)); // Steel Blue
+        startButton.setForeground(Color.WHITE);
+        startButton.setFocusPainted(false);
+        startButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(30, 144, 255), 2), // Dodger Blue
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+        gbc.gridy = 1;
+        welcomePanel.add(startButton, gbc);
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(welcomePanel);
+                initGamePanel();
+                revalidate();
+                repaint();
+            }
+        });
+    }
+
+    private void initGamePanel() {
+        board = new Board();
+        aiPlayer = new AIPlayerMinimax(board); // Initialize AIPlayerMinimax
+        aiPlayer.setSeed(Seed.NOUGHT); // Set AI seed
+
+        statusBar = new JLabel();
+        statusBar.setFont(FONT_STATUS);
+        statusBar.setBackground(COLOR_BG_STATUS);
+        statusBar.setOpaque(true);
+        statusBar.setPreferredSize(new Dimension(300, 30));
+        statusBar.setHorizontalAlignment(JLabel.LEFT);
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+
+        addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
@@ -50,27 +108,12 @@ public class TTT extends JPanel {
             }
         });
 
-        statusBar = new JLabel();
-        statusBar.setFont(FONT_STATUS);
-        statusBar.setBackground(COLOR_BG_STATUS);
-        statusBar.setOpaque(true);
-        statusBar.setPreferredSize(new Dimension(300, 30));
-        statusBar.setHorizontalAlignment(JLabel.LEFT);
-        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+        setLayout(new BorderLayout());
+        add(statusBar, BorderLayout.PAGE_END);
+        setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
+        setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
-        super.setLayout(new BorderLayout());
-        super.add(statusBar, BorderLayout.PAGE_END);
-        super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-        super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
-
-        initGame();
         newGame();
-    }
-
-    public void initGame() {
-        board = new Board();
-        aiPlayer = new AIPlayerMinimax(board); // Initialize AIPlayerMinimax
-        aiPlayer.setSeed(Seed.NOUGHT); // Set AI seed
     }
 
     public void newGame() {
@@ -87,7 +130,9 @@ public class TTT extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(COLOR_BG);
-        board.paint(g);
+        if (board != null) {
+            board.paint(g);
+        }
 
         if (currentState == State.PLAYING) {
             statusBar.setForeground(Color.BLACK);
