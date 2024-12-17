@@ -21,9 +21,10 @@ public class TTT extends JPanel {
     private State currentState;
     private Seed currentPlayer;
     private JLabel statusBar;
-    private AIPlayer aiPlayer; // AI player instance
-    private JPanel welcomePanel; // Welcome panel
-    private JButton startButton; // Start game button
+    private AIPlayer aiPlayer;
+    private JPanel welcomePanel;
+    private JPanel playerSelectionPanel;
+    private JButton startButton;
 
     public TTT() {
         setLayout(new BorderLayout());
@@ -46,11 +47,11 @@ public class TTT extends JPanel {
 
         startButton = new JButton("Start Game");
         startButton.setFont(new Font("Arial", Font.BOLD, 16));
-        startButton.setBackground(new Color(70, 130, 180)); // Steel Blue
+        startButton.setBackground(new Color(70, 130, 180));
         startButton.setForeground(Color.WHITE);
         startButton.setFocusPainted(false);
         startButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(30, 144, 255), 2), // Dodger Blue
+                BorderFactory.createLineBorder(new Color(30, 144, 255), 2),
                 BorderFactory.createEmptyBorder(5, 15, 5, 15)
         ));
         gbc.gridy = 1;
@@ -60,18 +61,58 @@ public class TTT extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 remove(welcomePanel);
-                initGamePanel();
+                initPlayerSelectionPanel();
+                add(playerSelectionPanel, BorderLayout.CENTER);
                 revalidate();
                 repaint();
             }
         });
     }
 
-    private void initGamePanel() {
-        board = new Board();
-        aiPlayer = new AIPlayerMinimax(board); // Initialize AIPlayerMinimax
-        aiPlayer.setSeed(Seed.NOUGHT); // Set AI seed
+    private void initPlayerSelectionPanel() {
+        playerSelectionPanel = new JPanel();
+        playerSelectionPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
+        JButton onePlayerButton = new JButton("1 Player");
+        onePlayerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        playerSelectionPanel.add(onePlayerButton, gbc);
+
+        JButton twoPlayerButton = new JButton("2 Player");
+        twoPlayerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        gbc.gridy = 1;
+        playerSelectionPanel.add(twoPlayerButton, gbc);
+
+        onePlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(playerSelectionPanel);
+                initGamePanel(true); // Initialize game with AI
+                revalidate();
+                repaint();
+            }
+        });
+
+        twoPlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(playerSelectionPanel);
+                initGamePanel(false); // Initialize game for two players
+                revalidate();
+                repaint();
+            }
+        });
+    }
+
+    private void initGamePanel(boolean isSinglePlayer) {
+        board = new Board();
+        if (isSinglePlayer) {
+            aiPlayer = new AIPlayerMinimax(board);
+            aiPlayer.setSeed(Seed.NOUGHT);
+        }
         statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
@@ -79,6 +120,11 @@ public class TTT extends JPanel {
         statusBar.setPreferredSize(new Dimension(300, 30));
         statusBar.setHorizontalAlignment(JLabel.LEFT);
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+
+        setLayout(new BorderLayout());
+        add(statusBar, BorderLayout.PAGE_END);
+        setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
+        setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -95,7 +141,7 @@ public class TTT extends JPanel {
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
                         // AI Move
-                        if (currentPlayer == Seed.NOUGHT && currentState == State.PLAYING) {
+                        if (isSinglePlayer && currentPlayer == Seed.NOUGHT && currentState == State.PLAYING) {
                             int[] aiMove = aiPlayer.move();
                             currentState = board.stepGame(currentPlayer, aiMove[0], aiMove[1]);
                             currentPlayer = Seed.CROSS;
@@ -108,22 +154,14 @@ public class TTT extends JPanel {
             }
         });
 
-        setLayout(new BorderLayout());
-        add(statusBar, BorderLayout.PAGE_END);
-        setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-        setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
-
         newGame();
     }
 
     public void newGame() {
-        for (int row = 0; row < Board.ROWS; ++row) {
-            for (int col = 0; col < Board.COLS; ++col) {
-                board.cells[row][col].content = Seed.NO_SEED;
-            }
-        }
+        board.newGame();
         currentPlayer = Seed.CROSS;
         currentState = State.PLAYING;
+        statusBar.setText("X's Turn");
     }
 
     @Override
