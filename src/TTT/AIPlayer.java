@@ -1,14 +1,16 @@
 package TTT;
 
 public abstract class AIPlayer {
-    protected int ROWS = Board.ROWS; // number of rows
-    protected int COLS = Board.COLS; // number of columns
+    protected int ROWS; // number of rows
+    protected int COLS; // number of columns
     protected Cell[][] cells; // the board's ROWS-by-COLS array of Cells
     protected Seed mySeed; // computer's seed
     protected Seed oppSeed; // opponent's seed
 
     /** Constructor with reference to game board */
     public AIPlayer(Board board) {
+        this.ROWS = board.getRows();
+        this.COLS = board.getCols();
         cells = board.cells;
     }
 
