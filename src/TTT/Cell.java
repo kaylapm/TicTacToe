@@ -3,7 +3,7 @@ package TTT;
 import java.awt.*;
 
 public class Cell {
-    public static int SIZE = 120; // Ukuran default, dapat disesuaikan
+    public static int SIZE = 120; // Default size, can be adjusted
     public static final int PADDING = SIZE / 5;
     public static final int SEED_SIZE = SIZE - PADDING * 2;
 
@@ -22,12 +22,8 @@ public class Cell {
 
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        int cellWidth = SIZE;
-        int cellHeight = SIZE;
-
-        // Calculate the top-left corner of the seed to center it
-        int x1 = col * cellWidth + (cellWidth - SEED_SIZE) / 2;
-        int y1 = row * cellHeight + (cellHeight - SEED_SIZE) / 2;
+        int x1 = col * SIZE + PADDING;
+        int y1 = row * SIZE + PADDING;
 
         // Set thicker stroke for drawing
         g2d.setStroke(new BasicStroke(4)); // Adjust the thickness as needed
