@@ -1,8 +1,9 @@
 package TTT;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class Board {
+public class Board extends JPanel {
     private int rows;
     private int cols;
     private int winCondition;

@@ -11,13 +11,13 @@ public class TTT extends JPanel {
     private static final long serialVersionUID = 1L;
 
     public static final String TITLE = "Tic Tac Toe";
-    public static final Color COLOR_BG = new Color(240, 240, 240);
-    public static final Color COLOR_BG_STATUS = new Color(200, 200, 200);
+    public static final Color COLOR_BG = Color.WHITE;
+    public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
     public static final Color COLOR_CROSS = new Color(239, 105, 80);
     public static final Color COLOR_NOUGHT = new Color(64, 154, 225);
-    public static final Font FONT_STATUS = new Font("Arial", Font.PLAIN, 16);
+    public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
-    private Board board;
+    private Board board;  // Board must be declared here
     private State currentState;
     private Seed currentPlayer;
     private JLabel statusBar;
@@ -37,8 +37,8 @@ public class TTT extends JPanel {
 
     private void initWelcomePanel() {
         welcomePanel = new JPanel();
-        welcomePanel.setBackground(COLOR_BG);
         welcomePanel.setLayout(new GridBagLayout());
+        welcomePanel.setPreferredSize(new Dimension(400, 300));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
@@ -49,7 +49,17 @@ public class TTT extends JPanel {
         welcomePanel.add(welcomeLabel, gbc);
 
         startButton = new JButton("Start Game");
-        styleButton(startButton);
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+        startButton.setBackground(new Color(70, 130, 180));
+        startButton.setForeground(Color.WHITE);
+        startButton.setFocusPainted(false);
+        startButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(30, 144, 255), 2),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+        gbc.gridy = 1;
+        welcomePanel.add(startButton, gbc);
+
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,17 +70,13 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-        gbc.gridy = 1;
-        welcomePanel.add(startButton, gbc);
     }
 
     private void initPlayerSelectionPanel() {
         playerSelectionPanel = new JPanel();
-        playerSelectionPanel.setBackground(COLOR_BG);
         playerSelectionPanel.setLayout(new GridLayout(1, 2));
 
         JButton onePlayerButton = new JButton("1 Player");
-        styleButton(onePlayerButton);
         onePlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,7 +90,6 @@ public class TTT extends JPanel {
         });
 
         JButton twoPlayerButton = new JButton("2 Players");
-        styleButton(twoPlayerButton);
         twoPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,93 +106,71 @@ public class TTT extends JPanel {
         playerSelectionPanel.add(twoPlayerButton);
     }
 
-    private void styleButton(JButton button) {
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setBackground(new Color(70, 130, 180));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(30, 144, 255), 2),
-                BorderFactory.createEmptyBorder(5, 15, 5, 15)
-        ));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(100, 149, 237));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(70, 130, 180));
-            }
-        });
-    }
-
     private void initGridSelectionPanel() {
         gridSelectionPanel = new JPanel();
-        gridSelectionPanel.setBackground(COLOR_BG);
         gridSelectionPanel.setLayout(new GridLayout(1, 3));
 
-        JButton threeByThreeButton = new JButton("3x3");
-        styleButton(threeByThreeButton);
-        threeByThreeButton.addActionListener(new ActionListener() {
+        JButton grid3x3Button = new JButton("3x3");
+        grid3x3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 3;
-                Cell.SIZE = 120;
                 startGame();
             }
         });
 
-        JButton fiveByFiveButton = new JButton("5x5");
-        styleButton(fiveByFiveButton);
-        fiveByFiveButton.addActionListener(new ActionListener() {
+        JButton grid5x5Button = new JButton("5x5");
+        grid5x5Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 5;
-                Cell.SIZE = 100;
                 startGame();
             }
         });
 
-        JButton sevenBySevenButton = new JButton("7x7");
-        styleButton(sevenBySevenButton);
-        sevenBySevenButton.addActionListener(new ActionListener() {
+        JButton grid7x7Button = new JButton("7x7");
+        grid7x7Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 7;
-                Cell.SIZE = 80;
                 startGame();
             }
         });
 
-        gridSelectionPanel.add(threeByThreeButton);
-        gridSelectionPanel.add(fiveByFiveButton);
-        gridSelectionPanel.add(sevenBySevenButton);
+        gridSelectionPanel.add(grid3x3Button);
+        gridSelectionPanel.add(grid5x5Button);
+        gridSelectionPanel.add(grid7x7Button);
     }
 
     private void startGame() {
         remove(gridSelectionPanel);
-        board = new Board(gridSize);
-        currentState = State.PLAYING;
-        currentPlayer = Seed.CROSS;
-        if (isSinglePlayer) {
-            aiPlayer = new AIPlayerMinimax(board);
-            aiPlayer.setSeed(Seed.NOUGHT);
-        }
         initGamePanel();
-        add(statusBar, BorderLayout.SOUTH);
         revalidate();
         repaint();
     }
 
     private void initGamePanel() {
+        board = new Board(gridSize);  // Initialize the board before using it
+
+        if (isSinglePlayer) {
+            aiPlayer = new AIPlayerMinimax(board);
+            aiPlayer.setSeed(Seed.NOUGHT);
+        }
+
         statusBar = new JLabel(" ");
         statusBar.setFont(FONT_STATUS);
-        statusBar.setOpaque(true);
         statusBar.setBackground(COLOR_BG_STATUS);
+        statusBar.setOpaque(true);
         statusBar.setPreferredSize(new Dimension(400, 30));
+        statusBar.setHorizontalAlignment(JLabel.LEFT);
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+
+        setLayout(new BorderLayout());
+        add(statusBar, BorderLayout.PAGE_END);
+        setPreferredSize(new Dimension(400, 400 + 30));
+        setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
+
+        newGame();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -203,6 +186,7 @@ public class TTT extends JPanel {
                         currentState = board.stepGame(currentPlayer, row, col);
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
+                        // AI Move
                         if (isSinglePlayer && currentPlayer == Seed.NOUGHT && currentState == State.PLAYING) {
                             int[] aiMove = aiPlayer.move();
                             currentState = board.stepGame(currentPlayer, aiMove[0], aiMove[1]);
@@ -213,39 +197,43 @@ public class TTT extends JPanel {
                     newGame();
                 }
                 repaint();
+
+                if (currentState == State.CROSS_WON) {
+                    JOptionPane.showMessageDialog(null, "Player X wins!");
+                    newGame();
+                } else if (currentState == State.NOUGHT_WON) {
+                    JOptionPane.showMessageDialog(null, "Player O wins!");
+                    newGame();
+                } else if (currentState == State.DRAW) {
+                    JOptionPane.showMessageDialog(null, "It's a draw!");
+                    newGame();
+                }
             }
         });
     }
 
     public void newGame() {
-        currentState = State.PLAYING;
-        currentPlayer = Seed.CROSS;
         board.newGame();
-        statusBar.setText(" ");
+        currentPlayer = Seed.CROSS;
+        currentState = State.PLAYING;
+        statusBar.setText("Player X's Turn");
         repaint();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(COLOR_BG);
-        board.paint(g);
-        if (currentState == State.PLAYING) {
-            statusBar.setText((currentPlayer == Seed.CROSS ? "X" : "O") + "'s Turn");
-        } else if (currentState == State.DRAW) {
-            statusBar.setText("It's a Draw! Click to play again.");
-        } else {
-            statusBar.setText((currentState == State.CROSS_WON ? "X" : "O") + " Won! Click to play again.");
+        if (board != null) {
+            board.paint(g);  // Ensure board is initialized before painting
         }
     }
 
     public static void play() {
         JFrame frame = new JFrame(TITLE);
-        TTT game = new TTT();
-        frame.setContentPane(game);
+        TTT gamePanel = new TTT();
+        frame.setContentPane(gamePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(Cell.SIZE * game.gridSize, Cell.SIZE * game.gridSize + 50);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
