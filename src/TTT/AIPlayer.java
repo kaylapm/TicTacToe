@@ -91,7 +91,64 @@ public class AIPlayer {
 
     private int evaluate() {
         int score = 0;
-        // Add your evaluation logic here
+        score += evaluateLine(0, 0, 0, 1, 0, 2);  // Row 0
+        score += evaluateLine(1, 0, 1, 1, 1, 2);  // Row 1
+        score += evaluateLine(2, 0, 2, 1, 2, 2);  // Row 2
+        score += evaluateLine(0, 0, 1, 0, 2, 0);  // Column 0
+        score += evaluateLine(0, 1, 1, 1, 2, 1);  // Column 1
+        score += evaluateLine(0, 2, 1, 2, 2, 2);  // Column 2
+        score += evaluateLine(0, 0, 1, 1, 2, 2);  // Diagonal
+        score += evaluateLine(0, 2, 1, 1, 2, 0);  // Opposite diagonal
+        return score;
+    }
+
+    private int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3) {
+        int score = 0;
+
+        // First cell
+        if (board.cells[row1][col1].content == mySeed) {
+            score = 1;
+        } else if (board.cells[row1][col1].content == oppSeed) {
+            score = -1;
+        }
+
+        // Second cell
+        if (board.cells[row2][col2].content == mySeed) {
+            if (score == 1) {   // cell1 is mySeed
+                score = 10;
+            } else if (score == -1) {  // cell1 is oppSeed
+                return 0;
+            } else {  // cell1 is empty
+                score = 1;
+            }
+        } else if (board.cells[row2][col2].content == oppSeed) {
+            if (score == -1) { // cell1 is oppSeed
+                score = -10;
+            } else if (score == 1) { // cell1 is mySeed
+                return 0;
+            } else {  // cell1 is empty
+                score = -1;
+            }
+        }
+
+        // Third cell
+        if (board.cells[row3][col3].content == mySeed) {
+            if (score > 0) {  // cell1 and/or cell2 is mySeed
+                score *= 10;
+            } else if (score < 0) {  // cell1 and/or cell2 is oppSeed
+                return 0;
+            } else {  // cell1 and cell2 are empty
+                score = 1;
+            }
+        } else if (board.cells[row3][col3].content == oppSeed) {
+            if (score < 0) {  // cell1 and/or cell2 is oppSeed
+                score *= 10;
+            } else if (score > 0) {  // cell1 and/or cell2 is mySeed
+                return 0;
+            } else {  // cell1 and cell2 are empty
+                score = -1;
+            }
+        }
         return score;
     }
 

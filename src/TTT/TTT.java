@@ -34,6 +34,7 @@ public class TTT extends JPanel {
     private boolean isSinglePlayer;
     private int gridSize;
     private Image backgroundImage;
+    private boolean isMusicEnabled = true; // Default music is enabled
 
     public TTT() {
         setLayout(new BorderLayout());
@@ -52,7 +53,7 @@ public class TTT extends JPanel {
         backgroundLabel.setLayout(new GridBagLayout());
 
         // Add welcome label
-        JLabel welcomeLabel = new JLabel(" ", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Configure GridBagConstraints for the welcome label
@@ -64,34 +65,38 @@ public class TTT extends JPanel {
         backgroundLabel.add(welcomeLabel, gbc);
 
         // Add start button
-        startButton = new JButton(" ");
+        startButton = new JButton("");
         styleButton(startButton);
-        startButton.setPreferredSize(new Dimension(180, 100)); // Set preferred size for the button
+        startButton.setPreferredSize(new Dimension(180, 100));
         startButton.setOpaque(false); // Make the button transparent
         startButton.setContentAreaFilled(false); // Remove the button's content area fill
         startButton.setBorderPainted(false); // Do not paint the button border
-        startButton.setFocusPainted(false); // Do not paint the focus rectangle
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                soundEffect.BACKSOUND.play(); // Play sound when the button is pressed
-                remove(welcomePanel);
-                initPlayerSelectionPanel();
-                add(playerSelectionPanel, BorderLayout.CENTER);
-                revalidate();
-                repaint();
+        startButton.setFocusPainted(false);
+        startButton.addActionListener(e -> {
+            if (isMusicEnabled) {
+                soundEffect.BACKSOUND.play(); // Play background music
             }
+            remove(welcomePanel);
+            initPlayerSelectionPanel();
+            add(playerSelectionPanel, BorderLayout.CENTER);
+            revalidate();
+            repaint();
         });
 
-        // Adjust constraints for the button to move it down
         gbc.gridy = 1; // Position the button below the welcome label
-        gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
-        gbc.insets = new Insets(550, 70, 10, 50);
         backgroundLabel.add(startButton, gbc);
+
+        // Add checkbox for music
+        JCheckBox musicCheckbox = new JCheckBox("Enable Music", isMusicEnabled);
+        musicCheckbox.addItemListener(e -> isMusicEnabled = musicCheckbox.isSelected());
+        gbc.gridy = 2;
+        gbc.insets = new Insets(20, 10, 10, 10);
+        backgroundLabel.add(musicCheckbox, gbc);
 
         // Add the background label to the welcome panel
         welcomePanel.add(backgroundLabel, BorderLayout.CENTER);
     }
+
 
     private void initPlayerSelectionPanel() {
         playerSelectionPanel = new JPanel(new BorderLayout());
@@ -264,16 +269,25 @@ public class TTT extends JPanel {
         board = new Board(gridSize);
         currentState = State.PLAYING;
         currentPlayer = Seed.CROSS;
+
         if (isSinglePlayer) {
             aiPlayer = new AIPlayer(board);
             aiPlayer.setSeed(Seed.NOUGHT);
         }
+
+        if (isMusicEnabled) {
+            soundEffect.BACKSOUND.play(); // Play background music
+        } else {
+            soundEffect.BACKSOUND.stop(); // Stop background music
+        }
+
         initGamePanel();
         add(statusBar, BorderLayout.NORTH);
         add(board, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
+
 
     private void initGamePanel() {
         statusBar = new JLabel(" ");
@@ -296,6 +310,7 @@ public class TTT extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                soundEffect.BACKSOUND.stop();
                 remove(board);
                 remove(statusBar);
                 add(gridSelectionPanel, BorderLayout.CENTER);

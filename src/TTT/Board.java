@@ -31,6 +31,10 @@ public class Board extends JPanel {
         return cols;
     }
 
+    public int getWinCondition() {
+        return winCondition;
+    }
+
     public void initGame() {
         cells = new Cell[rows][cols];
         for (int row = 0; row < rows; ++row) {
