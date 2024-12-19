@@ -29,6 +29,7 @@ public class TTT extends JPanel {
     private JButton quitButton;
     private JButton singlePlayerButton;
     private JButton multiPlayerButton;
+    private JButton backButton; // Declare Home button
     private boolean isSinglePlayer;
     private int gridSize;
     private Image backgroundImage;
@@ -287,6 +288,19 @@ public class TTT extends JPanel {
             }
         });
 
+        backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(board);
+                remove(statusBar);
+                add(gridSelectionPanel, BorderLayout.CENTER);
+                revalidate();
+                repaint();
+            }
+        });
+
         singlePlayerButton = new JButton("Single Player");
         styleButton(singlePlayerButton);
         singlePlayerButton.addActionListener(new ActionListener() {
@@ -312,6 +326,7 @@ public class TTT extends JPanel {
         buttonPanel.add(singlePlayerButton);
         buttonPanel.add(multiPlayerButton);
         buttonPanel.add(quitButton);
+        buttonPanel.add(backButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
