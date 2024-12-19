@@ -165,13 +165,32 @@ public class TTT extends JPanel {
     }
 
     private void initGridSelectionPanel() {
-        gridSelectionPanel = new JPanel(new GridLayout(4, 1));
+        gridSelectionPanel = new JPanel(new BorderLayout());
+
+        // Load the background image
+        ImageIcon backgroundIcon = new ImageIcon("src/images/gridpanel.png");
+        JLabel backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setLayout(new GridBagLayout());
+
+        // Add grid selection label
         JLabel gridLabel = new JLabel("Select Grid Size", SwingConstants.CENTER);
         gridLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        gridSelectionPanel.add(gridLabel);
 
-        JButton grid3x3Button = new JButton("3x3");
+        // Configure GridBagConstraints for the grid label
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        backgroundLabel.add(gridLabel, gbc);
+
+        // Add grid size buttons
+        JButton grid3x3Button = new JButton(" ");
         styleButton(grid3x3Button);
+        grid3x3Button.setPreferredSize(new Dimension(200, 150));
+        grid3x3Button.setOpaque(false); // Make the button transparent
+        grid3x3Button.setContentAreaFilled(false); // Remove the button's content area fill
+        grid3x3Button.setBorderPainted(false); // Do not paint the button border
         grid3x3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,10 +198,21 @@ public class TTT extends JPanel {
                 startGame();
             }
         });
-        gridSelectionPanel.add(grid3x3Button);
 
-        JButton grid5x5Button = new JButton("5x5");
+        // Set GridBagConstraints for grid3x3Button
+        GridBagConstraints gbc3x3 = new GridBagConstraints();
+        gbc3x3.gridx = 0;
+        gbc3x3.gridy = 1;
+        gbc3x3.insets = new Insets(300, -960, 10, 0);
+        backgroundLabel.add(grid3x3Button, gbc3x3);
+
+        JButton grid5x5Button = new JButton(" ");
         styleButton(grid5x5Button);
+        grid5x5Button.setPreferredSize(new Dimension(200, 150));
+        grid5x5Button.setOpaque(false); // Make the button transparent
+        grid5x5Button.setContentAreaFilled(false); // Remove the button's content area fill
+        grid5x5Button.setBorderPainted(false); // Do not paint the button border
+
         grid5x5Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -190,10 +220,20 @@ public class TTT extends JPanel {
                 startGame();
             }
         });
-        gridSelectionPanel.add(grid5x5Button);
 
-        JButton grid7x7Button = new JButton("7x7");
+        // Set GridBagConstraints for grid5x5Button
+        GridBagConstraints gbc5x5 = new GridBagConstraints();
+        gbc5x5.gridx = 0;
+        gbc5x5.gridy = 2;
+        gbc5x5.insets = new Insets(-200, 20, 10, 0);
+        backgroundLabel.add(grid5x5Button, gbc5x5);
+
+        JButton grid7x7Button = new JButton(" ");
         styleButton(grid7x7Button);
+        grid7x7Button.setPreferredSize(new Dimension(200, 150));
+        grid7x7Button.setOpaque(false); // Make the button transparent
+        grid7x7Button.setContentAreaFilled(false); // Remove the button's content area fill
+        grid7x7Button.setBorderPainted(false); // Do not paint the button border
         grid7x7Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,7 +241,16 @@ public class TTT extends JPanel {
                 startGame();
             }
         });
-        gridSelectionPanel.add(grid7x7Button);
+
+        // Set GridBagConstraints for grid7x7Button
+        GridBagConstraints gbc7x7 = new GridBagConstraints();
+        gbc7x7.gridx = 0;
+        gbc7x7.gridy = 3;
+        gbc7x7.insets = new Insets(-200, 900, 10, 0);
+        backgroundLabel.add(grid7x7Button, gbc7x7);
+
+        // Add the background label to the grid selection panel
+        gridSelectionPanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
     private void startGame() {
