@@ -20,10 +20,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * For Eclipse, place the audio file under "src", which will be copied into "bin".
  */
 public enum soundEffect {
-    EAT_FOOD("audio/mouse click.wav"),
-    EXPLODE("audio/mouse click.wav"),
-    WIN ("audio/violin-win-5-185128.wav"),
-    DIE("audio/game-die.wav");
+    CLICK("audio/mouse click.wav"),
+    WIN("audio/win.wav"),
+    BACKSOUND ("audio/backsound.wav"),
+    DRAW("audio/draw.wav");
 
     /** Nested enumeration for specifying volume */
     public static enum Volume {

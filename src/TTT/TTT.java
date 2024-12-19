@@ -1,5 +1,6 @@
 package TTT;
 
+import TTT.soundEffect; // Ensure this import is present
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,7 @@ public class TTT extends JPanel {
         initWelcomePanel();
         add(welcomePanel, BorderLayout.CENTER);
         backgroundImage = new ImageIcon("src/images/background.png").getImage();
+        soundEffect.initGame(); // Pre-load sound files
     }
 
     private void initWelcomePanel() {
@@ -72,6 +74,7 @@ public class TTT extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                soundEffect.BACKSOUND.play(); // Play sound when the button is pressed
                 remove(welcomePanel);
                 initPlayerSelectionPanel();
                 add(playerSelectionPanel, BorderLayout.CENTER);
@@ -176,7 +179,7 @@ public class TTT extends JPanel {
         backgroundLabel.setLayout(new GridBagLayout());
 
         // Add grid selection label
-        JLabel gridLabel = new JLabel("Select Grid Size", SwingConstants.CENTER);
+        JLabel gridLabel = new JLabel(" ", SwingConstants.CENTER);
         gridLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
         // Configure GridBagConstraints for the grid label
@@ -333,6 +336,7 @@ public class TTT extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                soundEffect.CLICK.play(); // Play mouse click sound
                 int mouseX = e.getX();
                 int mouseY = e.getY();
                 int row = mouseY / Cell.SIZE;
@@ -377,8 +381,10 @@ public class TTT extends JPanel {
         if (currentState == State.PLAYING) {
             statusBar.setText((currentPlayer == Seed.CROSS ? "X" : "O") + "'s Turn");
         } else if (currentState == State.DRAW) {
+            soundEffect.DRAW.play();
             statusBar.setText("It's a Draw! Click to play again.");
         } else {
+            soundEffect.WIN.play();
             statusBar.setText((currentState == State.CROSS_WON ? "X" : "O") + " Won! Click to play again.");
         }
     }
