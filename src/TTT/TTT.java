@@ -48,7 +48,7 @@ public class TTT extends JPanel {
         welcomePanel = new JPanel(new BorderLayout());
 
         // Load the background image
-        ImageIcon backgroundIcon = new ImageIcon("src/images/1panel.gif");
+        ImageIcon backgroundIcon = new ImageIcon("src/images/welcome.png");
         JLabel backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setLayout(new GridBagLayout());
 
@@ -84,14 +84,25 @@ public class TTT extends JPanel {
         });
 
         gbc.gridy = 1; // Position the button below the welcome label
+        gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
+        gbc.insets = new Insets(500, 150, 10, 50);
         backgroundLabel.add(startButton, gbc);
 
+
         // Add checkbox for music
-        JCheckBox musicCheckbox = new JCheckBox("Enable Music", isMusicEnabled);
-        musicCheckbox.addItemListener(e -> isMusicEnabled = musicCheckbox.isSelected());
+        JButton musicButton = new JButton(isMusicEnabled ? " " : " ");
+        musicButton.addActionListener(e -> {
+            isMusicEnabled = !isMusicEnabled;
+            musicButton.setText(isMusicEnabled ? " " : " ");
+        });
+        musicButton.setPreferredSize(new Dimension(100, 200));
         gbc.gridy = 2;
-        gbc.insets = new Insets(20, 10, 10, 10);
-        backgroundLabel.add(musicCheckbox, gbc);
+        gbc.insets = new Insets(-250, -350, 10, 10);
+        musicButton.setOpaque(false); // Make the button transparent
+        musicButton.setContentAreaFilled(false); // Remove the button's content area fill
+        musicButton.setBorderPainted(false); // Do not paint the button border
+        musicButton.setFocusPainted(false);
+        backgroundLabel.add(musicButton, gbc);
 
         // Add the background label to the welcome panel
         welcomePanel.add(backgroundLabel, BorderLayout.CENTER);
