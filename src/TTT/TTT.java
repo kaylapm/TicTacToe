@@ -39,13 +39,33 @@ public class TTT extends JPanel {
     }
 
     private void initWelcomePanel() {
-        welcomePanel = new JPanel(new GridLayout(3, 1));
-        JLabel welcomeLabel = new JLabel("Welcome to Tic Tac Toe!", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        welcomePanel.add(welcomeLabel);
+        welcomePanel = new JPanel(new BorderLayout());
 
-        startButton = new JButton("Start Game");
+        // Load the background image
+        ImageIcon backgroundIcon = new ImageIcon("src/images/1panel.gif");
+        JLabel backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setLayout(new GridBagLayout());
+
+        // Add welcome label
+        JLabel welcomeLabel = new JLabel(" ", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        // Configure GridBagConstraints for the welcome label
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 40); // Add some padding
+        gbc.anchor = GridBagConstraints.CENTER;
+        backgroundLabel.add(welcomeLabel, gbc);
+
+        // Add start button
+        startButton = new JButton(" ");
         styleButton(startButton);
+        startButton.setPreferredSize(new Dimension(180, 100)); // Set preferred size for the button
+        startButton.setOpaque(false); // Make the button transparent
+        startButton.setContentAreaFilled(false); // Remove the button's content area fill
+        startButton.setBorderPainted(false); // Do not paint the button border
+        startButton.setFocusPainted(false); // Do not paint the focus rectangle
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,17 +76,44 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-        welcomePanel.add(startButton);
+
+        // Adjust constraints for the button to move it down
+        gbc.gridy = 1; // Position the button below the welcome label
+        gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
+        gbc.insets = new Insets(550, 70, 10, 50);
+        backgroundLabel.add(startButton, gbc);
+
+        // Add the background label to the welcome panel
+        welcomePanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
     private void initPlayerSelectionPanel() {
-        playerSelectionPanel = new JPanel(new GridLayout(3, 1));
-        JLabel playerLabel = new JLabel("Select Player Mode", SwingConstants.CENTER);
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        playerSelectionPanel.add(playerLabel);
+        playerSelectionPanel = new JPanel(new BorderLayout());
 
-        singlePlayerButton = new JButton("Single Player");
+        // Load the background image
+        ImageIcon backgroundIcon = new ImageIcon("src/images/panel2new.png");
+        JLabel backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setLayout(new GridBagLayout());
+
+        // Add player selection label
+        JLabel playerLabel = new JLabel(" ", SwingConstants.CENTER);
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        // Configure GridBagConstraints for the player label
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10); // Add some padding
+        gbc.anchor = GridBagConstraints.CENTER;
+        backgroundLabel.add(playerLabel, gbc);
+
+        // Add single player button
+        singlePlayerButton = new JButton(" ");
         styleButton(singlePlayerButton);
+        singlePlayerButton.setPreferredSize(new Dimension(400, 200)); // Set larger preferred size
+        singlePlayerButton.setOpaque(false); // Make the button transparent
+        singlePlayerButton.setContentAreaFilled(false); // Remove the button's content area fill
+        singlePlayerButton.setBorderPainted(false); // Do not paint the button border
         singlePlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,10 +125,19 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-        playerSelectionPanel.add(singlePlayerButton);
 
-        multiPlayerButton = new JButton("Multiplayer");
+        // Adjust constraints for the single player button
+        gbc.gridy = 1; // Position below the player label
+        gbc.insets = new Insets(100, -750, 0, 0); // Increase top padding to move the button down
+        backgroundLabel.add(singlePlayerButton, gbc);
+
+        // Add multiplayer button
+        multiPlayerButton = new JButton(" ");
         styleButton(multiPlayerButton);
+        multiPlayerButton.setPreferredSize(new Dimension(400, 200)); // Set larger preferred size
+        multiPlayerButton.setOpaque(false); // Make the button transparent
+        multiPlayerButton.setContentAreaFilled(false); // Remove the button's content area fill
+        multiPlayerButton.setBorderPainted(false); // Do not paint the button border
         multiPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,7 +149,14 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-        playerSelectionPanel.add(multiPlayerButton);
+
+        // Adjust constraints for the multiplayer button
+        gbc.gridy = 2; // Position below the single player button
+        gbc.insets = new Insets(-200, 800, 50, 0); // Standard padding
+        backgroundLabel.add(multiPlayerButton, gbc);
+
+        // Add the background label to the player selection panel
+        playerSelectionPanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
     private void styleButton(JButton button) {
