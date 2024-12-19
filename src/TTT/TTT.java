@@ -26,6 +26,9 @@ public class TTT extends JPanel {
     private JPanel playerSelectionPanel;
     private JPanel gridSelectionPanel;
     private JButton startButton;
+    private JButton quitButton;
+    private JButton singlePlayerButton;
+    private JButton multiPlayerButton;
     private boolean isSinglePlayer;
     private int gridSize;
 
@@ -36,17 +39,10 @@ public class TTT extends JPanel {
     }
 
     private void initWelcomePanel() {
-        welcomePanel = new JPanel();
-        welcomePanel.setBackground(COLOR_BG);
-        welcomePanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        JLabel welcomeLabel = new JLabel("Welcome to Tic Tac Toe!");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        welcomePanel.add(welcomeLabel, gbc);
+        welcomePanel = new JPanel(new GridLayout(3, 1));
+        JLabel welcomeLabel = new JLabel("Welcome to Tic Tac Toe!", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomePanel.add(welcomeLabel);
 
         startButton = new JButton("Start Game");
         styleButton(startButton);
@@ -60,18 +56,18 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-        gbc.gridy = 1;
-        welcomePanel.add(startButton, gbc);
+        welcomePanel.add(startButton);
     }
 
     private void initPlayerSelectionPanel() {
-        playerSelectionPanel = new JPanel();
-        playerSelectionPanel.setBackground(COLOR_BG);
-        playerSelectionPanel.setLayout(new GridLayout(1, 2));
+        playerSelectionPanel = new JPanel(new GridLayout(3, 1));
+        JLabel playerLabel = new JLabel("Select Player Mode", SwingConstants.CENTER);
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        playerSelectionPanel.add(playerLabel);
 
-        JButton onePlayerButton = new JButton("1 Player");
-        styleButton(onePlayerButton);
-        onePlayerButton.addActionListener(new ActionListener() {
+        singlePlayerButton = new JButton("Single Player");
+        styleButton(singlePlayerButton);
+        singlePlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isSinglePlayer = true;
@@ -82,10 +78,11 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
+        playerSelectionPanel.add(singlePlayerButton);
 
-        JButton twoPlayerButton = new JButton("2 Players");
-        styleButton(twoPlayerButton);
-        twoPlayerButton.addActionListener(new ActionListener() {
+        multiPlayerButton = new JButton("Multiplayer");
+        styleButton(multiPlayerButton);
+        multiPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isSinglePlayer = false;
@@ -96,75 +93,52 @@ public class TTT extends JPanel {
                 repaint();
             }
         });
-
-        playerSelectionPanel.add(onePlayerButton);
-        playerSelectionPanel.add(twoPlayerButton);
+        playerSelectionPanel.add(multiPlayerButton);
     }
 
     private void styleButton(JButton button) {
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setBackground(new Color(70, 130, 180));
-        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.PLAIN, 16));
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(30, 144, 255), 2),
-                BorderFactory.createEmptyBorder(5, 15, 5, 15)
-        ));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(100, 149, 237));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(70, 130, 180));
-            }
-        });
     }
 
     private void initGridSelectionPanel() {
-        gridSelectionPanel = new JPanel();
-        gridSelectionPanel.setBackground(COLOR_BG);
-        gridSelectionPanel.setLayout(new GridLayout(1, 3));
+        gridSelectionPanel = new JPanel(new GridLayout(4, 1));
+        JLabel gridLabel = new JLabel("Select Grid Size", SwingConstants.CENTER);
+        gridLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        gridSelectionPanel.add(gridLabel);
 
-        JButton threeByThreeButton = new JButton("3x3");
-        styleButton(threeByThreeButton);
-        threeByThreeButton.addActionListener(new ActionListener() {
+        JButton grid3x3Button = new JButton("3x3");
+        styleButton(grid3x3Button);
+        grid3x3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 3;
-                Cell.SIZE = 120;
                 startGame();
             }
         });
+        gridSelectionPanel.add(grid3x3Button);
 
-        JButton fiveByFiveButton = new JButton("5x5");
-        styleButton(fiveByFiveButton);
-        fiveByFiveButton.addActionListener(new ActionListener() {
+        JButton grid5x5Button = new JButton("5x5");
+        styleButton(grid5x5Button);
+        grid5x5Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 5;
-                Cell.SIZE = 100;
                 startGame();
             }
         });
+        gridSelectionPanel.add(grid5x5Button);
 
-        JButton sevenBySevenButton = new JButton("7x7");
-        styleButton(sevenBySevenButton);
-        sevenBySevenButton.addActionListener(new ActionListener() {
+        JButton grid7x7Button = new JButton("7x7");
+        styleButton(grid7x7Button);
+        grid7x7Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gridSize = 7;
-                Cell.SIZE = 80;
                 startGame();
             }
         });
-
-        gridSelectionPanel.add(threeByThreeButton);
-        gridSelectionPanel.add(fiveByFiveButton);
-        gridSelectionPanel.add(sevenBySevenButton);
+        gridSelectionPanel.add(grid7x7Button);
     }
 
     private void startGame() {
@@ -173,11 +147,12 @@ public class TTT extends JPanel {
         currentState = State.PLAYING;
         currentPlayer = Seed.CROSS;
         if (isSinglePlayer) {
-            aiPlayer = new AIPlayerMinimax(board);
+            aiPlayer = new AIPlayer(board);
             aiPlayer.setSeed(Seed.NOUGHT);
         }
         initGamePanel();
-        add(statusBar, BorderLayout.SOUTH);
+        add(statusBar, BorderLayout.NORTH);
+        add(board, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
@@ -188,6 +163,43 @@ public class TTT extends JPanel {
         statusBar.setOpaque(true);
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setPreferredSize(new Dimension(400, 30));
+
+        quitButton = new JButton("Quit");
+        styleButton(quitButton);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0); // Exit the application
+            }
+        });
+
+        singlePlayerButton = new JButton("Single Player");
+        styleButton(singlePlayerButton);
+        singlePlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isSinglePlayer = true;
+                newGame();
+            }
+        });
+
+        multiPlayerButton = new JButton("Multiplayer");
+        styleButton(multiPlayerButton);
+        multiPlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isSinglePlayer = false;
+                newGame();
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(singlePlayerButton);
+        buttonPanel.add(multiPlayerButton);
+        buttonPanel.add(quitButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -245,7 +257,7 @@ public class TTT extends JPanel {
         frame.setContentPane(game);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(Cell.SIZE * game.gridSize, Cell.SIZE * game.gridSize + 50);
+        frame.setSize(Cell.SIZE * game.gridSize, Cell.SIZE * game.gridSize + 100); // Adjusted height
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

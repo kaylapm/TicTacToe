@@ -15,7 +15,7 @@ public class AIPlayerTableLookup extends AIPlayer {
     @Override
     public int[] move() {
         for (int[] move : preferredMoves) {
-            if (cells[move[0]][move[1]].content == Seed.NO_SEED) {
+            if (getBoard().cells[move[0]][move[1]].content == Seed.NO_SEED) {
                 return move;
             }
         }

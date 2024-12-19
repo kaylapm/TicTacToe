@@ -87,7 +87,9 @@ public class Board extends JPanel {
         return false;
     }
 
-    public void paint(Graphics g) {
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         int canvasWidth = Cell.SIZE * cols;
         int canvasHeight = Cell.SIZE * rows;
 

@@ -3,7 +3,7 @@ package TTT;
 import java.awt.*;
 
 public class Cell {
-    public static int SIZE = 120; // Default size, can be adjusted
+    public static int SIZE = 100; // Reduced size for better fit
     public static final int PADDING = SIZE / 5;
     public static final int SEED_SIZE = SIZE - PADDING * 2;
 
