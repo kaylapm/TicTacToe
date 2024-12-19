@@ -16,17 +16,14 @@ import javax.swing.ImageIcon;
  * <p>
  * Ideally, we should define two enums with inheritance, which is,
  * however, not supported.
- */
-public enum Seed {   // to save as "Seed.java"
-    CROSS("X", "images/Circle-PNG-File.png"),   // displayName, imageFilename
-    NOUGHT("O", "images/Red-Circle-Transparent.png"),
+ */public enum Seed {
+    CROSS("X", "images/x.png"),   // Update with your image path
+    NOUGHT("O", "images/o.png"),  // Update with your image path
     NO_SEED(" ", null);
 
-    // Private variables
     private String displayName;
     private Image img = null;
 
-    // Constructor (must be private)
     private Seed(String name, String imageFilename) {
         this.displayName = name;
 
@@ -35,7 +32,6 @@ public enum Seed {   // to save as "Seed.java"
             ImageIcon icon = null;
             if (imgURL != null) {
                 icon = new ImageIcon(imgURL);
-                //System.out.println(icon);  // debugging
             } else {
                 System.err.println("Couldn't find file " + imageFilename);
             }
@@ -43,7 +39,6 @@ public enum Seed {   // to save as "Seed.java"
         }
     }
 
-    // Public getters
     public String getDisplayName() {
         return displayName;
     }

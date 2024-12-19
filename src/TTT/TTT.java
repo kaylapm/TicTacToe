@@ -31,11 +31,13 @@ public class TTT extends JPanel {
     private JButton multiPlayerButton;
     private boolean isSinglePlayer;
     private int gridSize;
+    private Image backgroundImage;
 
     public TTT() {
         setLayout(new BorderLayout());
         initWelcomePanel();
         add(welcomePanel, BorderLayout.CENTER);
+        backgroundImage = new ImageIcon("src/images/background.png").getImage();
     }
 
     private void initWelcomePanel() {
@@ -341,6 +343,8 @@ public class TTT extends JPanel {
         });
     }
 
+
+
     public void newGame() {
         currentState = State.PLAYING;
         currentPlayer = Seed.CROSS;
@@ -349,10 +353,11 @@ public class TTT extends JPanel {
         repaint();
     }
 
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(COLOR_BG);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         board.paint(g);
         if (currentState == State.PLAYING) {
             statusBar.setText((currentPlayer == Seed.CROSS ? "X" : "O") + "'s Turn");

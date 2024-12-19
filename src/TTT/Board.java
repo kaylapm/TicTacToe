@@ -12,6 +12,7 @@ public class Board extends JPanel {
     public static final Color COLOR_GRID = Color.LIGHT_GRAY;
     public static final int Y_OFFSET = 1;
 
+    private Image backgroundImage;
     Cell[][] cells;
 
     public Board(int size) {
@@ -19,6 +20,7 @@ public class Board extends JPanel {
         this.cols = size;
         this.winCondition = (size == 3) ? 3 : 4; // 3 for 3x3, 4 for 5x5 and 7x7
         initGame();
+        backgroundImage = new ImageIcon("src/images/background.png").getImage(); // Load the background image
     }
 
     public int getRows() {
@@ -90,6 +92,10 @@ public class Board extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // Draw the background image
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+
         int canvasWidth = Cell.SIZE * cols;
         int canvasHeight = Cell.SIZE * rows;
 
