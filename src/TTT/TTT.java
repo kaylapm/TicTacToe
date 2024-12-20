@@ -1,6 +1,16 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #5
+ * 1 - 5026231158 - Kayla Putri Maharani
+ * 2 - 5026231170 - Tahiyyah Mufhimah
+ * 3 - 5026231206 - Rafael Dimas K
+ */
+
 package TTT;
 
-import TTT.soundEffect; // Ensure this import is present
+import TTT.soundEffect;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +42,7 @@ public class TTT extends JPanel {
     private JButton quitButton;
     private JButton singlePlayerButton;
     private JButton multiPlayerButton;
-    private JButton backButton; // Declare Home button
+    private JButton backButton;
     private boolean isSinglePlayer;
     private int gridSize;
     private int playerScore = 0;
@@ -40,7 +50,7 @@ public class TTT extends JPanel {
     private int tieScore = 0;
     private JLabel scoreLabel;
     private Image backgroundImage;
-    private boolean isMusicEnabled = true; // Default music is enabled
+    private boolean isMusicEnabled = true;
     private JLabel stopwatchLabel;
 
     public TTT() {
@@ -48,40 +58,36 @@ public class TTT extends JPanel {
         initWelcomePanel();
         add(welcomePanel, BorderLayout.CENTER);
         backgroundImage = new ImageIcon("src/images/background.png").getImage();
-        soundEffect.initGame(); // Pre-load sound files
+        soundEffect.initGame();
     }
 
     private void initWelcomePanel() {
         welcomePanel = new JPanel(new BorderLayout());
 
-        // Load the background image
         ImageIcon backgroundIcon = new ImageIcon("src/images/welcome.png");
         JLabel backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setLayout(new GridBagLayout());
 
-        // Add welcome label
         JLabel welcomeLabel = new JLabel("", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
-        // Configure GridBagConstraints for the welcome label
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 40); // Add some padding
+        gbc.insets = new Insets(10, 10, 10, 40);
         gbc.anchor = GridBagConstraints.CENTER;
         backgroundLabel.add(welcomeLabel, gbc);
 
-        // Add start button
         startButton = new JButton("");
         styleButton(startButton);
         startButton.setPreferredSize(new Dimension(180, 100));
-        startButton.setOpaque(false); // Make the button transparent
-        startButton.setContentAreaFilled(false); // Remove the button's content area fill
-        startButton.setBorderPainted(false); // Do not paint the button border
+        startButton.setOpaque(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
         startButton.addActionListener(e -> {
             if (isMusicEnabled) {
-                soundEffect.BACKSOUND.play(); // Play background music
+                soundEffect.BACKSOUND.play();
             }
             remove(welcomePanel);
             initPlayerSelectionPanel();
@@ -90,13 +96,11 @@ public class TTT extends JPanel {
             repaint();
         });
 
-        gbc.gridy = 1; // Position the button below the welcome label
-        gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(500, 150, 10, 50);
         backgroundLabel.add(startButton, gbc);
 
-
-        // Add checkbox for music
         JButton musicButton = new JButton(isMusicEnabled ? " " : " ");
         musicButton.addActionListener(e -> {
             isMusicEnabled = !isMusicEnabled;
@@ -105,13 +109,12 @@ public class TTT extends JPanel {
         musicButton.setPreferredSize(new Dimension(100, 200));
         gbc.gridy = 2;
         gbc.insets = new Insets(-250, -350, 10, 10);
-        musicButton.setOpaque(false); // Make the button transparent
-        musicButton.setContentAreaFilled(false); // Remove the button's content area fill
-        musicButton.setBorderPainted(false); // Do not paint the button border
+        musicButton.setOpaque(false);
+        musicButton.setContentAreaFilled(false);
+        musicButton.setBorderPainted(false);
         musicButton.setFocusPainted(false);
         backgroundLabel.add(musicButton, gbc);
 
-        // Add the background label to the welcome panel
         welcomePanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
@@ -119,30 +122,26 @@ public class TTT extends JPanel {
     private void initPlayerSelectionPanel() {
         playerSelectionPanel = new JPanel(new BorderLayout());
 
-        // Load the background image
         ImageIcon backgroundIcon = new ImageIcon("src/images/panel2new.png");
         JLabel backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setLayout(new GridBagLayout());
 
-        // Add player selection label
         JLabel playerLabel = new JLabel(" ", SwingConstants.CENTER);
         playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // Configure GridBagConstraints for the player label
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 10); // Add some padding
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
         backgroundLabel.add(playerLabel, gbc);
 
-        // Add single player button
         singlePlayerButton = new JButton(" ");
         styleButton(singlePlayerButton);
-        singlePlayerButton.setPreferredSize(new Dimension(400, 200)); // Set larger preferred size
-        singlePlayerButton.setOpaque(false); // Make the button transparent
-        singlePlayerButton.setContentAreaFilled(false); // Remove the button's content area fill
-        singlePlayerButton.setBorderPainted(false); // Do not paint the button border
+        singlePlayerButton.setPreferredSize(new Dimension(400, 200));
+        singlePlayerButton.setOpaque(false);
+        singlePlayerButton.setContentAreaFilled(false);
+        singlePlayerButton.setBorderPainted(false);
         singlePlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,18 +154,17 @@ public class TTT extends JPanel {
             }
         });
 
-        // Adjust constraints for the single player button
-        gbc.gridy = 1; // Position below the player label
-        gbc.insets = new Insets(100, -750, 0, 0); // Increase top padding to move the button down
+
+        gbc.gridy = 1;
+        gbc.insets = new Insets(100, -750, 0, 0);
         backgroundLabel.add(singlePlayerButton, gbc);
 
-        // Add multiplayer button
         multiPlayerButton = new JButton(" ");
         styleButton(multiPlayerButton);
-        multiPlayerButton.setPreferredSize(new Dimension(400, 200)); // Set larger preferred size
-        multiPlayerButton.setOpaque(false); // Make the button transparent
-        multiPlayerButton.setContentAreaFilled(false); // Remove the button's content area fill
-        multiPlayerButton.setBorderPainted(false); // Do not paint the button border
+        multiPlayerButton.setPreferredSize(new Dimension(400, 200));
+        multiPlayerButton.setOpaque(false);
+        multiPlayerButton.setContentAreaFilled(false);
+        multiPlayerButton.setBorderPainted(false);
         multiPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,12 +177,10 @@ public class TTT extends JPanel {
             }
         });
 
-        // Adjust constraints for the multiplayer button
-        gbc.gridy = 2; // Position below the single player button
-        gbc.insets = new Insets(-200, 800, 50, 0); // Standard padding
+        gbc.gridy = 2;
+        gbc.insets = new Insets(-200, 800, 50, 0);
         backgroundLabel.add(multiPlayerButton, gbc);
 
-        // Add the background label to the player selection panel
         playerSelectionPanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
@@ -196,16 +192,13 @@ public class TTT extends JPanel {
     private void initGridSelectionPanel() {
         gridSelectionPanel = new JPanel(new BorderLayout());
 
-        // Load the background image
         ImageIcon backgroundIcon = new ImageIcon("src/images/grid.png");
         JLabel backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setLayout(new GridBagLayout());
 
-        // Add grid selection label
         JLabel gridLabel = new JLabel(" ", SwingConstants.CENTER);
         gridLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // Configure GridBagConstraints for the grid label
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -213,13 +206,12 @@ public class TTT extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         backgroundLabel.add(gridLabel, gbc);
 
-        // Add grid size buttons
         JButton grid3x3Button = new JButton(" ");
         styleButton(grid3x3Button);
         grid3x3Button.setPreferredSize(new Dimension(200, 150));
-        grid3x3Button.setOpaque(false); // Make the button transparent
-        grid3x3Button.setContentAreaFilled(false); // Remove the button's content area fill
-        grid3x3Button.setBorderPainted(false); // Do not paint the button border
+        grid3x3Button.setOpaque(false);
+        grid3x3Button.setContentAreaFilled(false);
+        grid3x3Button.setBorderPainted(false);
         grid3x3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -228,7 +220,6 @@ public class TTT extends JPanel {
             }
         });
 
-        // Set GridBagConstraints for grid3x3Button
         GridBagConstraints gbc3x3 = new GridBagConstraints();
         gbc3x3.gridx = 0;
         gbc3x3.gridy = 1;
@@ -238,9 +229,9 @@ public class TTT extends JPanel {
         JButton grid5x5Button = new JButton(" ");
         styleButton(grid5x5Button);
         grid5x5Button.setPreferredSize(new Dimension(200, 150));
-        grid5x5Button.setOpaque(false); // Make the button transparent
-        grid5x5Button.setContentAreaFilled(false); // Remove the button's content area fill
-        grid5x5Button.setBorderPainted(false); // Do not paint the button border
+        grid5x5Button.setOpaque(false);
+        grid5x5Button.setContentAreaFilled(false);
+        grid5x5Button.setBorderPainted(false);
 
         grid5x5Button.addActionListener(new ActionListener() {
             @Override
@@ -250,7 +241,6 @@ public class TTT extends JPanel {
             }
         });
 
-        // Set GridBagConstraints for grid5x5Button
         GridBagConstraints gbc5x5 = new GridBagConstraints();
         gbc5x5.gridx = 0;
         gbc5x5.gridy = 2;
@@ -260,9 +250,9 @@ public class TTT extends JPanel {
         JButton grid7x7Button = new JButton(" ");
         styleButton(grid7x7Button);
         grid7x7Button.setPreferredSize(new Dimension(200, 150));
-        grid7x7Button.setOpaque(false); // Make the button transparent
-        grid7x7Button.setContentAreaFilled(false); // Remove the button's content area fill
-        grid7x7Button.setBorderPainted(false); // Do not paint the button border
+        grid7x7Button.setOpaque(false);
+        grid7x7Button.setContentAreaFilled(false);
+        grid7x7Button.setBorderPainted(false);
         grid7x7Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -271,14 +261,12 @@ public class TTT extends JPanel {
             }
         });
 
-        // Set GridBagConstraints for grid7x7Button
         GridBagConstraints gbc7x7 = new GridBagConstraints();
         gbc7x7.gridx = 0;
         gbc7x7.gridy = 3;
         gbc7x7.insets = new Insets(-200, 900, 10, 0);
         backgroundLabel.add(grid7x7Button, gbc7x7);
 
-        // Add the background label to the grid selection panel
         gridSelectionPanel.add(backgroundLabel, BorderLayout.CENTER);
     }
 
@@ -294,9 +282,9 @@ public class TTT extends JPanel {
         }
 
         if (isMusicEnabled) {
-            soundEffect.BACKSOUND.play(); // Play background music
+            soundEffect.BACKSOUND.play();
         } else {
-            soundEffect.BACKSOUND.stop(); // Stop background music
+            soundEffect.BACKSOUND.stop();
         }
 
         initGamePanel();
@@ -326,13 +314,13 @@ public class TTT extends JPanel {
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setPreferredSize(new Dimension(400, 30));
 
-        stopwatchLabel = new JLabel("Stopwatch: 00:00"); // Initialize stopwatchLabel
+        stopwatchLabel = new JLabel("Stopwatch: 00:00");
         stopwatchLabel.setFont(FONT_STATUS);
         stopwatchLabel.setOpaque(true);
         stopwatchLabel.setBackground(COLOR_BG_STATUS);
         stopwatchLabel.setPreferredSize(new Dimension(400, 30));
 
-        scoreLabel = new JLabel("Player: 0 | Tie: 0 | Computer: 0"); // Initialize scoreLabel
+        scoreLabel = new JLabel("Player: 0 | Tie: 0 | Computer: 0");
         scoreLabel.setFont(FONT_STATUS);
         scoreLabel.setOpaque(true);
         scoreLabel.setBackground(COLOR_BG_STATUS);
@@ -343,7 +331,7 @@ public class TTT extends JPanel {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Exit the application
+                System.exit(0);
             }
         });
 
@@ -383,7 +371,7 @@ public class TTT extends JPanel {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(scoreLabel);
-        buttonPanel.add(stopwatchLabel); // Add stopwatch label first
+        buttonPanel.add(stopwatchLabel);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(singlePlayerButton);
         buttonPanel.add(multiPlayerButton);
@@ -395,7 +383,7 @@ public class TTT extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                soundEffect.CLICK.play(); // Play mouse click sound
+                soundEffect.CLICK.play();
                 int mouseX = e.getX();
                 int mouseY = e.getY();
                 int row = mouseY / Cell.SIZE;
@@ -421,8 +409,6 @@ public class TTT extends JPanel {
         });
     }
 
-
-
     public void newGame() {
         currentState = State.PLAYING;
         currentPlayer = Seed.CROSS;
@@ -446,9 +432,9 @@ public class TTT extends JPanel {
         } else {
             soundEffect.WIN.play();
             if (currentState == State.CROSS_WON) {
-                playerScore++; // Increment player score
+                playerScore++;
             } else if (currentState == State.NOUGHT_WON) {
-                computerScore++; // Increment computer score
+                computerScore++;
             }
             statusBar.setText((currentState == State.CROSS_WON ? "X" : "O") + " Won! Click to play again.");
         }
@@ -461,7 +447,7 @@ public class TTT extends JPanel {
         frame.setContentPane(game);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(Cell.SIZE * game.gridSize, Cell.SIZE * game.gridSize + 100); // Adjusted height
+        frame.setSize(Cell.SIZE * game.gridSize, Cell.SIZE * game.gridSize + 100);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

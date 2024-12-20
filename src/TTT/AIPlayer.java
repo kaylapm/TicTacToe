@@ -1,12 +1,22 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #5
+ * 1 - 5026231158 - Kayla Putri Maharani
+ * 2 - 5026231170 - Tahiyyah Mufhimah
+ * 3 - 5026231206 - Rafael Dimas K
+ */
+
 package TTT;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AIPlayer {
-    private Seed mySeed;    // AI's seed
-    private Seed oppSeed;   // Opponent's seed
-    private Board board;    // The game board
+    private Seed mySeed;
+    private Seed oppSeed;
+    private Board board;
 
     public AIPlayer(Board board) {
         this.board = board;
@@ -18,9 +28,9 @@ public class AIPlayer {
     }
 
     public int[] move() {
-        int depth = 4; // Adjust depth as needed for performance
+        int depth = 4;
         int[] result = minimax(depth, mySeed, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        return new int[] {result[1], result[2]}; // row, col
+        return new int[] {result[1], result[2]};
     }
 
     protected Board getBoard() {
@@ -91,61 +101,58 @@ public class AIPlayer {
 
     private int evaluate() {
         int score = 0;
-        score += evaluateLine(0, 0, 0, 1, 0, 2);  // Row 0
-        score += evaluateLine(1, 0, 1, 1, 1, 2);  // Row 1
-        score += evaluateLine(2, 0, 2, 1, 2, 2);  // Row 2
-        score += evaluateLine(0, 0, 1, 0, 2, 0);  // Column 0
-        score += evaluateLine(0, 1, 1, 1, 2, 1);  // Column 1
-        score += evaluateLine(0, 2, 1, 2, 2, 2);  // Column 2
-        score += evaluateLine(0, 0, 1, 1, 2, 2);  // Diagonal
-        score += evaluateLine(0, 2, 1, 1, 2, 0);  // Opposite diagonal
+        score += evaluateLine(0, 0, 0, 1, 0, 2);
+        score += evaluateLine(1, 0, 1, 1, 1, 2);
+        score += evaluateLine(2, 0, 2, 1, 2, 2);
+        score += evaluateLine(0, 0, 1, 0, 2, 0);
+        score += evaluateLine(0, 1, 1, 1, 2, 1);
+        score += evaluateLine(0, 2, 1, 2, 2, 2);
+        score += evaluateLine(0, 0, 1, 1, 2, 2);
+        score += evaluateLine(0, 2, 1, 1, 2, 0);
         return score;
     }
 
     private int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3) {
         int score = 0;
 
-        // First cell
         if (board.cells[row1][col1].content == mySeed) {
             score = 1;
         } else if (board.cells[row1][col1].content == oppSeed) {
             score = -1;
         }
 
-        // Second cell
         if (board.cells[row2][col2].content == mySeed) {
-            if (score == 1) {   // cell1 is mySeed
+            if (score == 1) {
                 score = 10;
-            } else if (score == -1) {  // cell1 is oppSeed
+            } else if (score == -1) {
                 return 0;
-            } else {  // cell1 is empty
+            } else {
                 score = 1;
             }
         } else if (board.cells[row2][col2].content == oppSeed) {
-            if (score == -1) { // cell1 is oppSeed
+            if (score == -1) {
                 score = -10;
-            } else if (score == 1) { // cell1 is mySeed
+            } else if (score == 1) {
                 return 0;
-            } else {  // cell1 is empty
+            } else {
                 score = -1;
             }
         }
 
-        // Third cell
         if (board.cells[row3][col3].content == mySeed) {
-            if (score > 0) {  // cell1 and/or cell2 is mySeed
+            if (score > 0) {
                 score *= 10;
-            } else if (score < 0) {  // cell1 and/or cell2 is oppSeed
+            } else if (score < 0) {
                 return 0;
-            } else {  // cell1 and cell2 are empty
+            } else {
                 score = 1;
             }
         } else if (board.cells[row3][col3].content == oppSeed) {
-            if (score < 0) {  // cell1 and/or cell2 is oppSeed
+            if (score < 0) {
                 score *= 10;
-            } else if (score > 0) {  // cell1 and/or cell2 is mySeed
+            } else if (score > 0) {
                 return 0;
-            } else {  // cell1 and cell2 are empty
+            } else {
                 score = -1;
             }
         }
@@ -153,7 +160,6 @@ public class AIPlayer {
     }
 
     private boolean hasWon(Seed seed) {
-        // Add your winning logic here
         return false;
     }
 }

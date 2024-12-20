@@ -1,24 +1,22 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #5
+ * 1 - 5026231158 - Kayla Putri Maharani
+ * 2 - 5026231170 - Tahiyyah Mufhimah
+ * 3 - 5026231206 - Rafael Dimas K
+ */
+
 package TTT;
 
 import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-/**
- * This enum is used by:
- * 1. Player: takes value of CROSS or NOUGHT
- * 2. Cell content: takes value of CROSS, NOUGHT, or NO_SEED.
- * <p>
- * We also attach a display image icon (text or image) for the items.
- * and define the related variable/constructor/getter.
- * To draw the image:
- * g.drawImage(content.getImage(), x, y, width, height, null);
- * <p>
- * Ideally, we should define two enums with inheritance, which is,
- * however, not supported.
- */public enum Seed {
-    CROSS("X", "images/x.png"),   // Update with your image path
-    NOUGHT("O", "images/o.png"),  // Update with your image path
+public enum Seed {
+    CROSS("X", "images/x.png"),
+    NOUGHT("O", "images/o.png"),
     NO_SEED(" ", null);
 
     private String displayName;

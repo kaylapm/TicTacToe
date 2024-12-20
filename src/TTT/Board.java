@@ -1,3 +1,13 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #5
+ * 1 - 5026231158 - Kayla Putri Maharani
+ * 2 - 5026231170 - Tahiyyah Mufhimah
+ * 3 - 5026231206 - Rafael Dimas K
+ */
+
 package TTT;
 
 import javax.swing.*;
@@ -18,9 +28,9 @@ public class Board extends JPanel {
     public Board(int size) {
         this.rows = size;
         this.cols = size;
-        this.winCondition = (size == 3) ? 3 : 4; // 3 for 3x3, 4 for 5x5 and 7x7
+        this.winCondition = (size == 3) ? 3 : 4;
         initGame();
-        backgroundImage = new ImageIcon("src/images/background.png").getImage(); // Load the background image
+        backgroundImage = new ImageIcon("src/images/background.png").getImage();
     }
 
     public int getRows() {
@@ -70,10 +80,10 @@ public class Board extends JPanel {
     }
 
     private boolean checkWin(Seed player, int row, int col) {
-        return (checkLine(player, row, 0, 0, 1) || // Check row
-                checkLine(player, 0, col, 1, 0) || // Check column
-                checkLine(player, row - Math.min(row, col), col - Math.min(row, col), 1, 1) || // Check diagonal
-                checkLine(player, row - Math.min(row, cols - 1 - col), col + Math.min(row, cols - 1 - col), 1, -1)); // Check opposite diagonal
+        return (checkLine(player, row, 0, 0, 1) ||
+                checkLine(player, 0, col, 1, 0) ||
+                checkLine(player, row - Math.min(row, col), col - Math.min(row, col), 1, 1) ||
+                checkLine(player, row - Math.min(row, cols - 1 - col), col + Math.min(row, cols - 1 - col), 1, -1));
     }
 
     private boolean checkLine(Seed player, int startRow, int startCol, int deltaRow, int deltaCol) {
@@ -97,7 +107,6 @@ public class Board extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Draw the background image
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         int canvasWidth = Cell.SIZE * cols;

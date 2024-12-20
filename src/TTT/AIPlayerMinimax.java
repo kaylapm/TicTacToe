@@ -1,3 +1,13 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #5
+ * 1 - 5026231158 - Kayla Putri Maharani
+ * 2 - 5026231170 - Tahiyyah Mufhimah
+ * 3 - 5026231206 - Rafael Dimas K
+ */
+
 package TTT;
 
 import java.util.ArrayList;
@@ -11,7 +21,7 @@ public class AIPlayerMinimax extends AIPlayer {
 
     @Override
     public int[] move() {
-        int depth = 4; // Adjust depth for performance on larger grids
+        int depth = 4;
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
         int[] result = minimax(depth, getMySeed(), alpha, beta);
@@ -76,23 +86,22 @@ public class AIPlayerMinimax extends AIPlayer {
         int score = 0;
         int winCondition = getBoard().getWinCondition();
 
-        // Evaluate rows, columns, and diagonals
         for (int row = 0; row < getBoard().getRows(); ++row) {
             for (int col = 0; col <= getBoard().getCols() - winCondition; ++col) {
-                score += evaluateLine(row, col, 0, 1, winCondition); // Horizontal
+                score += evaluateLine(row, col, 0, 1, winCondition);
             }
         }
         for (int col = 0; col < getBoard().getCols(); ++col) {
             for (int row = 0; row <= getBoard().getRows() - winCondition; ++row) {
-                score += evaluateLine(row, col, 1, 0, winCondition); // Vertical
+                score += evaluateLine(row, col, 1, 0, winCondition);
             }
         }
         for (int row = 0; row <= getBoard().getRows() - winCondition; ++row) {
             for (int col = 0; col <= getBoard().getCols() - winCondition; ++col) {
-                score += evaluateLine(row, col, 1, 1, winCondition); // Diagonal
+                score += evaluateLine(row, col, 1, 1, winCondition);
             }
             for (int col = winCondition - 1; col < getBoard().getCols(); ++col) {
-                score += evaluateLine(row, col, 1, -1, winCondition); // Anti-diagonal
+                score += evaluateLine(row, col, 1, -1, winCondition);
             }
         }
 
@@ -117,13 +126,13 @@ public class AIPlayerMinimax extends AIPlayer {
         }
 
         if (countMySeed == winCondition) {
-            score += 1000; // Winning move
+            score += 1000;
         } else if (countOppSeed == winCondition) {
-            score -= 1000; // Block opponent win
+            score -= 1000;
         } else if (countMySeed == winCondition - 1 && countOppSeed == 0) {
-            score += 100; // Near win
+            score += 100;
         } else if (countOppSeed == winCondition - 1 && countMySeed == 0) {
-            score -= 100; // Block near opponent win
+            score -= 100;
         }
 
         return score;
