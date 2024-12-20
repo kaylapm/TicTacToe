@@ -19,6 +19,8 @@ public class TTT extends JPanel {
     public static final Font FONT_STATUS = new Font("Arial", Font.PLAIN, 16);
 
     private Board board;
+    private Timer stopwatchTimer;
+    private long stopwatchStartTime;
     private State currentState;
     private Seed currentPlayer;
     private JLabel statusBar;
@@ -33,8 +35,13 @@ public class TTT extends JPanel {
     private JButton backButton; // Declare Home button
     private boolean isSinglePlayer;
     private int gridSize;
+    private int playerScore = 0;
+    private int computerScore = 0;
+    private int tieScore = 0;
+    private JLabel scoreLabel;
     private Image backgroundImage;
     private boolean isMusicEnabled = true; // Default music is enabled
+    private JLabel stopwatchLabel;
 
     public TTT() {
         setLayout(new BorderLayout());
@@ -295,10 +302,22 @@ public class TTT extends JPanel {
         initGamePanel();
         add(statusBar, BorderLayout.NORTH);
         add(board, BorderLayout.CENTER);
+
+        stopwatchStartTime = System.currentTimeMillis();
+        stopwatchTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long elapsedTime = System.currentTimeMillis() - stopwatchStartTime;
+                long seconds = (elapsedTime / 1000) % 60;
+                long minutes = (elapsedTime / (1000 * 60)) % 60;
+                stopwatchLabel.setText(String.format("Stopwatch: %02d:%02d", minutes, seconds));
+            }
+        });
+        stopwatchTimer.start();
+
         revalidate();
         repaint();
     }
-
 
     private void initGamePanel() {
         statusBar = new JLabel(" ");
@@ -306,6 +325,18 @@ public class TTT extends JPanel {
         statusBar.setOpaque(true);
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setPreferredSize(new Dimension(400, 30));
+
+        stopwatchLabel = new JLabel("Stopwatch: 00:00"); // Initialize stopwatchLabel
+        stopwatchLabel.setFont(FONT_STATUS);
+        stopwatchLabel.setOpaque(true);
+        stopwatchLabel.setBackground(COLOR_BG_STATUS);
+        stopwatchLabel.setPreferredSize(new Dimension(400, 30));
+
+        scoreLabel = new JLabel("Player: 0 | Tie: 0 | Computer: 0"); // Initialize scoreLabel
+        scoreLabel.setFont(FONT_STATUS);
+        scoreLabel.setOpaque(true);
+        scoreLabel.setBackground(COLOR_BG_STATUS);
+        scoreLabel.setPreferredSize(new Dimension(400, 30));
 
         quitButton = new JButton("Quit");
         styleButton(quitButton);
@@ -350,7 +381,9 @@ public class TTT extends JPanel {
             }
         });
 
-        JPanel buttonPanel = new JPanel();
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonPanel.add(scoreLabel);
+        buttonPanel.add(stopwatchLabel); // Add stopwatch label first
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(singlePlayerButton);
         buttonPanel.add(multiPlayerButton);
@@ -409,10 +442,17 @@ public class TTT extends JPanel {
         } else if (currentState == State.DRAW) {
             soundEffect.DRAW.play();
             statusBar.setText("It's a Draw! Click to play again.");
+            tieScore++;
         } else {
             soundEffect.WIN.play();
+            if (currentState == State.CROSS_WON) {
+                playerScore++; // Increment player score
+            } else if (currentState == State.NOUGHT_WON) {
+                computerScore++; // Increment computer score
+            }
             statusBar.setText((currentState == State.CROSS_WON ? "X" : "O") + " Won! Click to play again.");
         }
+        scoreLabel.setText("Player: " + playerScore + " | Tie: " + tieScore + " | Computer: " + computerScore);
     }
 
     public static void play() {
