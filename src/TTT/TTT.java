@@ -197,7 +197,7 @@ public class TTT extends JPanel {
         gridSelectionPanel = new JPanel(new BorderLayout());
 
         // Load the background image
-        ImageIcon backgroundIcon = new ImageIcon("src/images/gridpanel.png");
+        ImageIcon backgroundIcon = new ImageIcon("src/images/grid.png");
         JLabel backgroundLabel = new JLabel(backgroundIcon);
         backgroundLabel.setLayout(new GridBagLayout());
 
